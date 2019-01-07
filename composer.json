@@ -1,0 +1,24 @@
+{
+    "name": "bertmaurau/php-watermarker",
+    "description": "A plain and simple package to watermark images.",
+    "keywords": ["watermark", "image", "package"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bert Maurau",
+            "email": "hello@bertmaurau.be"
+        }
+    ],
+    "type": "project",
+    "require": {
+		"php": ">=5.4"
+    },
+    "require-dev": {
+		"phpunit/phpunit": "6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "BertMaurau\\Watermarker\\": "src/"
+        }
+    }
+}
