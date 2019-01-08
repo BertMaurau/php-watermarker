@@ -21,25 +21,25 @@ class Watermark
      * @param string $sourceImage
      * @param string $watermarkImage
      * @param string $outputPath
+     * @param string $outputFilename
      * @param string $outputExtension
      * @param string $position
-     * @param string $background
      * @param int $outputQuality
      *
      * @throws Exception
      *
      * @return boolean
      */
-    public static function AddImageAsWatermark(string $sourceImage, string $watermarkImage, string $outputPath = '/', string $outputExtension = null, string $position = 'bottom-right', string $background = 'white', int $outputQuality = 100)
+    public static function AddImageAsWatermark(string $sourceImage, string $watermarkImage, string $outputPath = '/', string $outputFilename = null, string $outputExtension = null, string $position = 'bottom-right', int $outputQuality = 100)
     {
 
         // check if the watermark image is an actual image
         if (!self::checkFile($watermarkImage)) {
-            throw new Exception("File not found `$watermarkImage`.");
+            throw new \Exception("File not found `$watermarkImage`.");
         }
         // check if the source image is an actual image
         if (!self::checkFile($sourceImage)) {
-            throw new Exception("File not found `$sourceImage`.");
+            throw new \Exception("File not found `$sourceImage`.");
         }
 
         // create the image resource from the given file
@@ -63,7 +63,7 @@ class Watermark
         imagecopy($_sourceImage, $_watermarkImage, $_position -> x, $_position -> y, 0, 0, $_watermarkDimensions -> x, $_watermarkDimensions -> y);
 
         // build the output name
-        $outputFile = $outputPath . pathinfo($sourceImage)['filename'] . '-watermarked.' . $outputExtension ?: pathinfo($sourceImage)['extension'];
+        $outputFile = rtrim($outputPath, '/') . DIRECTORY_SEPARATOR . ($outputFilename ?: (pathinfo($sourceImage)['filename'] . '-watermarked')) . '.' . ltrim(($outputExtension ?: pathinfo($sourceImage)['extension']), '.');
 
         // write to file
         $result = self::exportImage($_sourceImage, $outputFile, $outputQuality, $outputExtension ?: pathinfo($sourceImage)['extension']);
@@ -118,7 +118,7 @@ class Watermark
 
         try {
             $image = $_caller($imageFile);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             // throw the original exception
             throw $ex;
         }
@@ -229,7 +229,7 @@ class Watermark
                 $res = imagebmp($input, $outputFile, ($quality < 100));
                 break;
             default:
-                throw new Exception("Unsupported output extension `$extension`.");
+                throw new \Exception("Unsupported output extension `$extension`.");
         }
 
         return $res;
