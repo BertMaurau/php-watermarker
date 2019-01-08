@@ -4,6 +4,9 @@
 
 A simple and basic library to watermark an image using a source-image and a watermark-image. Function can be used as a static caller as well as an initialized function (see example).
 
+![Preview](https://raw.githubusercontent.com/bertmaurau/php-watermarker/branch/preview.jpg)
+
+
 
 ## Usage
 
