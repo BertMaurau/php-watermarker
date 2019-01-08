@@ -2,6 +2,9 @@
 
 namespace BertMaurau\Watermarker;
 
+require_once 'ImageType.php';
+require_once 'Position.php';
+
 /**
  *  Watermark
  *
@@ -12,8 +15,44 @@ namespace BertMaurau\Watermarker;
 class Watermark
 {
 
-    // list of pre-defined positions where the watermark can be placed
-    const WATERMARK_POSITIONS = ['top-left', 'top-center', 'top-right', 'center-center', 'bottom-left', 'bottom-center', 'bottom-right'];
+    private $sourceImage;
+    private $watermarkImage;
+    private $outputPath;
+    private $outputFilename;
+    private $outputExtension;
+    private $position;
+    private $outputQuality;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this -> setOutputPath('/');
+        $this -> setOutputFilename(null);
+        $this -> setOutputExtension(ImageType::JPEG);
+        $this -> setPosition(Position::CENTER_CENTER);
+        $this -> setOutputQuality(100);
+    }
+
+    /**
+     * The non-static caller
+     *
+     * @throws \Exception
+     *
+     * @return boolean
+     */
+    public function watermark()
+    {
+        if (!isset($this -> sourceImage)) {
+            throw new \Exception('No source-image set.');
+        }
+        if (!isset($this -> watermarkImage)) {
+            throw new \Exception('No watermark-image set.');
+        }
+
+        return self::AddImageAsWatermark($this -> getSourceImage(), $this -> getWatermarkImage(), $this -> getOutputPath(), $this -> getOutputFilename(), $this -> getOutputExtension(), $this -> getPosition(), $this -> getOutputQuality());
+    }
 
     /**
      * Add an image as a watermark to an existing image
@@ -22,15 +61,15 @@ class Watermark
      * @param string $watermarkImage
      * @param string $outputPath
      * @param string $outputFilename
-     * @param string $outputExtension
-     * @param string $position
+     * @param ImageType $outputExtension
+     * @param Position $position
      * @param int $outputQuality
      *
      * @throws Exception
      *
      * @return boolean
      */
-    public static function AddImageAsWatermark(string $sourceImage, string $watermarkImage, string $outputPath = '/', string $outputFilename = null, string $outputExtension = null, string $position = 'bottom-right', int $outputQuality = 100)
+    public static function AddImageAsWatermark(string $sourceImage, string $watermarkImage, string $outputPath = '/', string $outputFilename = null, string $outputExtension = null, string $position = Position::CENTER_CENTER, int $outputQuality = 100)
     {
 
         // check if the watermark image is an actual image
@@ -233,6 +272,83 @@ class Watermark
         }
 
         return $res;
+    }
+
+    public function getSourceImage()
+    {
+        return $this -> sourceImage;
+    }
+
+    public function getWatermarkImage()
+    {
+        return $this -> watermarkImage;
+    }
+
+    public function getOutputPath()
+    {
+        return $this -> outputPath;
+    }
+
+    public function getOutputFilename()
+    {
+        return $this -> outputFilename;
+    }
+
+    public function getOutputExtension()
+    {
+        return $this -> outputExtension;
+    }
+
+    public function getPosition()
+    {
+        return $this -> position;
+    }
+
+    public function getOutputQuality()
+    {
+        return $this -> outputQuality;
+    }
+
+    public function setSourceImage(string $sourceImage)
+    {
+        $this -> sourceImage = $sourceImage;
+        return $this;
+    }
+
+    public function setWatermarkImage(string $watermarkImage)
+    {
+        $this -> watermarkImage = $watermarkImage;
+        return $this;
+    }
+
+    public function setOutputPath(string $outputPath)
+    {
+        $this -> outputPath = $outputPath;
+        return $this;
+    }
+
+    public function setOutputFilename($outputFilename)
+    {
+        $this -> outputFilename = $outputFilename;
+        return $this;
+    }
+
+    public function setOutputExtension(string $outputExtension)
+    {
+        $this -> outputExtension = $outputExtension;
+        return $this;
+    }
+
+    public function setPosition(string $position)
+    {
+        $this -> position = $position;
+        return $this;
+    }
+
+    public function setOutputQuality(int $outputQuality)
+    {
+        $this -> outputQuality = $outputQuality;
+        return $this;
     }
 
 }
